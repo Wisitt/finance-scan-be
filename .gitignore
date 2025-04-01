@@ -36,11 +36,6 @@ lerna-debug.log*
 !.vscode/extensions.json
 financescan-81fc681bb48e.json
 
-# enforce LF line endings for Prisma files
-*.prisma text eol=lf
-*.toml   text eol=lf
-*.sql    text eol=lf
-
 
 
 # dotenv environment variable files
