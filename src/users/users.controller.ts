@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Param, Body, Query } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, Query, BadRequestException } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto, UpdateUserDto } from './dtos';
 
@@ -25,8 +25,12 @@ export class UsersController {
   // POST /users
   @Post()
   async create(@Body() dto: CreateUserDto) {
+    if (!dto.email) {
+      throw new BadRequestException('Email is required');
+    }
     return this.usersService.create(dto);
   }
+  
 
   // PUT /users/:id
   @Put(':id')

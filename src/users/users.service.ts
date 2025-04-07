@@ -25,10 +25,25 @@ export class UsersService {
   }
 
   async create(dto: CreateUserDto) {
-    return this.prisma.user.create({
-      data: dto,
+    return this.prisma.user.upsert({
+      where: { email: dto.email },
+      update: {
+        name: dto.name,
+        avatar_url: dto.avatar_url,
+        google_id: dto.google_id,
+        last_login: dto.last_login ? new Date(dto.last_login) : new Date(),
+      },
+      create: {
+        name: dto.name,
+        email: dto.email,
+        avatar_url: dto.avatar_url,
+        google_id: dto.google_id,
+        last_login: dto.last_login ? new Date(dto.last_login) : new Date(),
+        created_at: new Date(),
+      },
     });
   }
+  
 
   async update(id: string, dto: UpdateUserDto) {
     return this.prisma.user.update({
