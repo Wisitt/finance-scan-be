@@ -44,7 +44,7 @@ financescan-81fc681bb48e.json
 .env.test.local
 .env.production.local
 .env.local
-
+.env.yaml
 # temp directory
 .temp
 .tmp

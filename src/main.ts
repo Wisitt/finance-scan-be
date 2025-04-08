@@ -1,13 +1,13 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
-import * as dotenv from 'dotenv'; 
+import { NestFactory } from '@nestjs/core';
+import * as dotenv from 'dotenv';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000'; 
-  const port = parseInt(process.env.PORT || '3001', 10);
+  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+  const port = parseInt(process.env.PORT || '3000', 10);
   dotenv.config();
   app.enableCors({
     origin: frontendUrl,

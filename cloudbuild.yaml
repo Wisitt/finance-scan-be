@@ -1,0 +1,67 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'asia-southeast1-docker.pkg.dev/$financescan/nest-docker-repo/nest-app', '.']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'asia-southeast1-docker.pkg.dev/$financescan/nest-docker-repo/nest-app']
+
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
+    args:
+      [
+        'run', 'deploy', 'nest-app',
+        '--image=asia-southeast1-docker.pkg.dev/$financescan/nest-docker-repo/nest-app',
+        '--region=asia-southeast1',
+        '--platform=managed',
+        '--allow-unauthenticated',
+        '--set-secrets',
+        'DATABASE_URL=projects/$financescan/secrets/DATABASE_URL:latest',
+        'DIRECT_URL=projects/$financescan/secrets/DIRECT_URL:latest',
+        'SUPABASE_SERVICE_ROLE_KEY=projects/$financescan/secrets/SUPABASE_SERVICE_ROLE_KEY:latest',
+        'SUPABASE_ANON_KEY=projects/$financescan/secrets/SUPABASE_ANON_KEY:latest',
+        'SUPABASE_URL=projects/$financescan/secrets/SUPABASE_URL:latest',
+        'GOOGLE_financescan=projects/$financescan/secrets/GOOGLE_financescan:latest',
+        'GOOGLE_PRIVATE_KEY_ID=projects/$financescan/secrets/GOOGLE_PRIVATE_KEY_ID:latest',
+        'GOOGLE_PRIVATE_KEY=projects/$financescan/secrets/GOOGLE_PRIVATE_KEY:latest',
+        'GOOGLE_CLIENT_EMAIL=projects/$financescan/secrets/GOOGLE_CLIENT_EMAIL:latest',
+        'GOOGLE_CLIENT_ID=projects/$financescan/secrets/GOOGLE_CLIENT_ID:latest',
+        'GOOGLE_AUTH_URI=projects/$financescan/secrets/GOOGLE_AUTH_URI:latest',
+        'GOOGLE_TOKEN_URI=projects/$financescan/secrets/GOOGLE_TOKEN_URI:latest',
+        'GOOGLE_AUTH_PROVIDER_CERT_URL=projects/$financescan/secrets/GOOGLE_AUTH_PROVIDER_CERT_URL:latest',
+        'GOOGLE_CLIENT_CERT_URL=projects/$financescan/secrets/GOOGLE_CLIENT_CERT_URL:latest',
+        'GOOGLE_UNIVERSE_DOMAIN=projects/$financescan/secrets/GOOGLE_UNIVERSE_DOMAIN:latest'
+      ]
+
+availableSecrets:
+  secretManager:
+    secrets:
+      - env: DATABASE_URL
+        versionName: projects/$financescan/secrets/DATABASE_URL/versions/latest
+      - env: DIRECT_URL
+        versionName: projects/$financescan/secrets/DIRECT_URL/versions/latest
+      - env: SUPABASE_SERVICE_ROLE_KEY
+        versionName: projects/$financescan/secrets/SUPABASE_SERVICE_ROLE_KEY/versions/latest
+      - env: SUPABASE_ANON_KEY
+        versionName: projects/$financescan/secrets/SUPABASE_ANON_KEY/versions/latest
+      - env: SUPABASE_URL
+        versionName: projects/$financescan/secrets/SUPABASE_URL/versions/latest
+      - env: GOOGLE_financescan
+        versionName: projects/$financescan/secrets/GOOGLE_financescan/versions/latest
+      - env: GOOGLE_PRIVATE_KEY_ID
+        versionName: projects/$financescan/secrets/GOOGLE_PRIVATE_KEY_ID/versions/latest
+      - env: GOOGLE_PRIVATE_KEY
+        versionName: projects/$financescan/secrets/GOOGLE_PRIVATE_KEY/versions/latest
+      - env: GOOGLE_CLIENT_EMAIL
+        versionName: projects/$financescan/secrets/GOOGLE_CLIENT_EMAIL/versions/latest
+      - env: GOOGLE_CLIENT_ID
+        versionName: projects/$financescan/secrets/GOOGLE_CLIENT_ID/versions/latest
+      - env: GOOGLE_AUTH_URI
+        versionName: projects/$financescan/secrets/GOOGLE_AUTH_URI/versions/latest
+      - env: GOOGLE_TOKEN_URI
+        versionName: projects/$financescan/secrets/GOOGLE_TOKEN_URI/versions/latest
+      - env: GOOGLE_AUTH_PROVIDER_CERT_URL
+        versionName: projects/$financescan/secrets/GOOGLE_AUTH_PROVIDER_CERT_URL/versions/latest
+      - env: GOOGLE_CLIENT_CERT_URL
+        versionName: projects/$financescan/secrets/GOOGLE_CLIENT_CERT_URL/versions/latest
+      - env: GOOGLE_UNIVERSE_DOMAIN
+        versionName: projects/$financescan/secrets/GOOGLE_UNIVERSE_DOMAIN/versions/latest
