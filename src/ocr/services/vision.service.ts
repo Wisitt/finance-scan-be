@@ -1,5 +1,6 @@
 import { ImageAnnotatorClient, protos } from '@google-cloud/vision';
 import { Injectable, Logger } from '@nestjs/common';
+import { join } from 'path';
 import { ParsedOcrResult } from '../dtos';
 
 @Injectable()
@@ -9,11 +10,8 @@ export class VisionService {
 
   constructor() {
     try {
-      if (!process.env.GOOGLE_CREDENTIALS) {
-        throw new Error('Environment variable GOOGLE_CREDENTIALS is not set!');
-      }
       this.client = new ImageAnnotatorClient({
-        credentials: JSON.parse(process.env.GOOGLE_CREDENTIALS),
+        keyFilename: join(__dirname, '../../secrets/vision-service-account.json'),
       });
       this.logger.log('Google Vision Client Initialized Successfully.');
     } catch (error) {
@@ -21,6 +19,7 @@ export class VisionService {
       throw error;
     }
   }
+
 
   private parseVisionApiResponse(
     annotation: protos.google.cloud.vision.v1.IAnnotateImageResponse,
