@@ -1,5 +1,5 @@
-import { Injectable, Logger } from '@nestjs/common';
 import { ImageAnnotatorClient, protos } from '@google-cloud/vision';
+import { Injectable, Logger } from '@nestjs/common';
 import { ParsedOcrResult } from '../dtos';
 
 @Injectable()
@@ -9,10 +9,16 @@ export class VisionService {
 
   constructor() {
     try {
-      this.client = new ImageAnnotatorClient();
+      if (!process.env.GOOGLE_CREDENTIALS) {
+        throw new Error('Environment variable GOOGLE_CREDENTIALS is not set!');
+      }
+      this.client = new ImageAnnotatorClient({
+        credentials: JSON.parse(process.env.GOOGLE_CREDENTIALS),
+      });
       this.logger.log('Google Vision Client Initialized Successfully.');
     } catch (error) {
       this.logger.error('Failed to initialize Google Vision Client!', error.stack);
+      throw error;
     }
   }
 

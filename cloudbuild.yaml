@@ -1,19 +1,28 @@
+# cloudbuild.yaml
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'asia-southeast1-docker.pkg.dev/$PROJECT_ID/nest-docker-repo/nest-app', '.']
+    args:
+      - build
+      - '-t'
+      - 'asia-southeast1-docker.pkg.dev/financescan/finance/nest-backend'
+      - '.'
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'asia-southeast1-docker.pkg.dev/$PROJECT_ID/nest-docker-repo/nest-app']
+    args:
+      - push
+      - 'asia-southeast1-docker.pkg.dev/financescan/finance/nest-backend'
 
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: 'gcloud'
+    entrypoint: gcloud
     args:
-      [
-        'run', 'deploy', 'nest-app',
-        '--image=asia-southeast1-docker.pkg.dev/$PROJECT_ID/nest-docker-repo/nest-app',
-        '--region=asia-southeast1',
-        '--platform=managed',
-        '--allow-unauthenticated',
-        '--set-secrets=DATABASE_URL=DATABASE_URL:latest,DIRECT_URL=DIRECT_URL:latest,SUPABASE_SERVICE_ROLE_KEY=SUPABASE_SERVICE_ROLE_KEY:latest,SUPABASE_ANON_KEY=SUPABASE_ANON_KEY:latest,SUPABASE_URL=SUPABASE_URL:latest,GOOGLE_PROJECT_ID=GOOGLE_PROJECT_ID:latest,GOOGLE_PRIVATE_KEY_ID=GOOGLE_PRIVATE_KEY_ID:latest,GOOGLE_PRIVATE_KEY=GOOGLE_PRIVATE_KEY:latest,GOOGLE_CLIENT_EMAIL=GOOGLE_CLIENT_EMAIL:latest,GOOGLE_CLIENT_ID=GOOGLE_CLIENT_ID:latest,GOOGLE_AUTH_URI=GOOGLE_AUTH_URI:latest,GOOGLE_TOKEN_URI=GOOGLE_TOKEN_URI:latest,GOOGLE_AUTH_PROVIDER_CERT_URL=GOOGLE_AUTH_PROVIDER_CERT_URL:latest,GOOGLE_CLIENT_CERT_URL=GOOGLE_CLIENT_CERT_URL:latest,GOOGLE_UNIVERSE_DOMAIN=GOOGLE_UNIVERSE_DOMAIN:latest'
-      ]
+      - run
+      - deploy
+      - nest-backend
+      - '--image=asia-southeast1-docker.pkg.dev/financescan/finance/nest-backend'
+      - '--region=asia-southeast1'
+      - '--platform=managed'
+      - '--allow-unauthenticated'
+      - '--set-secrets=DATABASE_URL=DATABASE_URL:latest,DIRECT_URL=DIRECT_URL:latest,SUPABASE_SERVICE_ROLE_KEY=SUPABASE_SERVICE_ROLE_KEY:latest,SUPABASE_ANON_KEY=SUPABASE_ANON_KEY:latest,SUPABASE_URL=SUPABASE_URL:latest,GOOGLE_PRIVATE_KEY=GOOGLE_PRIVATE_KEY:latest,GOOGLE_CLIENT_EMAIL=GOOGLE_CLIENT_EMAIL:latest,GOOGLE_PROJECT_ID=GOOGLE_PROJECT_ID:latest,GOOGLE_PRIVATE_KEY_ID=GOOGLE_PRIVATE_KEY_ID:latest,GOOGLE_CLIENT_ID=GOOGLE_CLIENT_ID:latest,GOOGLE_AUTH_URI=GOOGLE_AUTH_URI:latest,GOOGLE_TOKEN_URI=GOOGLE_TOKEN_URI:latest,GOOGLE_AUTH_PROVIDER_CERT_URL=GOOGLE_AUTH_PROVIDER_CERT_URL:latest,GOOGLE_CLIENT_CERT_URL=GOOGLE_CLIENT_CERT_URL:latest,GOOGLE_UNIVERSE_DOMAIN=GOOGLE_UNIVERSE_DOMAIN:latest,FRONTEND_URL=FRONTEND_URL:latest'
 
+images:
+  - 'asia-southeast1-docker.pkg.dev/financescan/finance/nest-backend'

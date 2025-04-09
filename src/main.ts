@@ -8,7 +8,7 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const port = process.env.PORT || 8080;
+  const port = Number(process.env.PORT) || 8080;
   const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
 
   app.enableCors({
@@ -19,9 +19,11 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
 
-  Logger.log(`CORS enabled for origin: ${frontendUrl}`, 'Bootstrap');
-  Logger.log(`App listening on port ${port}`, 'Bootstrap');
+  Logger.log(`✅ ENV Loaded`);
+  Logger.log(`🌐 FRONTEND_URL = ${frontendUrl}`, 'Bootstrap');
+  Logger.log(`🚀 App starting on port ${port}`, 'Bootstrap');
 
-  await app.listen(port);
+  // Important: Must bind to 0.0.0.0 for Cloud Run
+  await app.listen(port, '0.0.0.0');
 }
 bootstrap();
