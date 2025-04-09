@@ -11,7 +11,7 @@ export class VisionService {
   constructor() {
     try {
       this.client = new ImageAnnotatorClient({
-        keyFilename: join(__dirname, '../../secrets/vision-service-account.json'),
+        keyFilename: join(__dirname, '../../secrets/vision-service-account.json')
       });
       this.logger.log('Google Vision Client Initialized Successfully.');
     } catch (error) {
